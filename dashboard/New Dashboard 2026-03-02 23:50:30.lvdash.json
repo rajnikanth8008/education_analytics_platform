@@ -1,0 +1,498 @@
+{
+  "datasets": [
+    {
+      "name": "5f8b3ed6",
+      "displayName": "gold_yoy_trend",
+      "queryLines": [
+        "SELECT * FROM myworkspace.education_db.gold_yoy_trend"
+      ]
+    },
+    {
+      "name": "dc37db05",
+      "displayName": "gold_school_comparison",
+      "queryLines": [
+        "SELECT * FROM myworkspace.education_db.gold_school_comparison"
+      ]
+    },
+    {
+      "name": "eff269a1",
+      "displayName": "gold_dropout_risk",
+      "queryLines": [
+        "SELECT * FROM myworkspace.education_db.gold_dropout_risk"
+      ]
+    },
+    {
+      "name": "e444a463",
+      "displayName": "gold_gender_dist",
+      "queryLines": [
+        "SELECT * FROM myworkspace.education_db.gold_gender_dist"
+      ]
+    },
+    {
+      "name": "2d93db76",
+      "displayName": "gold_grade_funnel",
+      "queryLines": [
+        "SELECT * FROM myworkspace.education_db.gold_grade_funnel"
+      ]
+    },
+    {
+      "name": "a13e8ffb",
+      "displayName": "gold_kpi_summary",
+      "queryLines": [
+        "--SELECT * FROM myworkspace.education_db.gold_kpi_summary\n",
+        "\n",
+        "SELECT total_students_enrolled   AS `Total Students Enrolled`,\n",
+        "  total_schools             AS `Total Schools`,\n",
+        "  overall_avg_score         AS `Avg Performance Score`,\n",
+        "  overall_dropout_pct       AS `Overall Dropout %`,\n",
+        "  high_risk_count           AS `High Risk Count`,\n",
+        "  avg_budget_usd            AS `Avg Budget Per Student (USD)`\n",
+        "FROM education_db.gold_kpi_summary;\n"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "83ab0711",
+      "displayName": "Enrollement Analytics",
+      "layout": [
+        {
+          "widget": {
+            "name": "schools-by-performance-rank",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "dc37db05",
+                  "fields": [
+                    {
+                      "name": "count(performance_rank)",
+                      "expression": "COUNT(`performance_rank`)"
+                    },
+                    {
+                      "name": "performance_rank",
+                      "expression": "`performance_rank`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Schools by Performance Rank",
+                "showTitle": true
+              },
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "count(performance_rank)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "performance_rank",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 7,
+            "y": 8,
+            "width": 5,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "total-enrollment-by-school-type",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "dc37db05",
+                  "fields": [
+                    {
+                      "name": "school_type",
+                      "expression": "`school_type`"
+                    },
+                    {
+                      "name": "sum(total_enrollment)",
+                      "expression": "SUM(`total_enrollment`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Total Enrollment by School Type",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "school_type",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "y-reversed"
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(total_enrollment)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 8,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "yearly-enrollment-trends",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "5f8b3ed6",
+                  "fields": [
+                    {
+                      "name": "academic_year",
+                      "expression": "`academic_year`"
+                    },
+                    {
+                      "name": "sum(total_students)",
+                      "expression": "SUM(`total_students`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Yearly Enrollment Trends",
+                "showTitle": true
+              },
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "academic_year",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(total_students)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 2,
+            "width": 11,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "top-dropout-risk-schools-year-wise-filter",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "eff269a1",
+                  "fields": [
+                    {
+                      "name": "school_name",
+                      "expression": "`school_name`"
+                    },
+                    {
+                      "name": "avg_dropout_pct",
+                      "expression": "`avg_dropout_pct`"
+                    },
+                    {
+                      "name": "max_dropout_pct",
+                      "expression": "`max_dropout_pct`"
+                    },
+                    {
+                      "name": "affected_students",
+                      "expression": "`affected_students`"
+                    },
+                    {
+                      "name": "risk_flag",
+                      "expression": "`risk_flag`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Top Dropout Risk Schools with Year Wise Filter",
+                "showTitle": true
+              },
+              "rowsPerPage": 25,
+              "displayRowNumbers": false,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "school_name",
+                    "displayName": "School"
+                  },
+                  {
+                    "fieldName": "avg_dropout_pct",
+                    "displayName": "Avg Dropout%"
+                  },
+                  {
+                    "fieldName": "max_dropout_pct",
+                    "displayName": "Max Dropout%"
+                  },
+                  {
+                    "fieldName": "affected_students",
+                    "displayName": "Affected Students"
+                  },
+                  {
+                    "fieldName": "risk_flag",
+                    "displayName": "Risk Flag"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 15,
+            "width": 11,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "school-name",
+            "queries": [
+              {
+                "name": "dashboards/01f116647ec41f6ab5f35de5151f8576/datasets/01f1166558bf19ef8c60a6d0609e4814_school_name",
+                "query": {
+                  "datasetName": "eff269a1",
+                  "fields": [
+                    {
+                      "name": "school_name",
+                      "expression": "`school_name`"
+                    },
+                    {
+                      "name": "school_name_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "School Name"
+              },
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "school_name",
+                    "queryName": "dashboards/01f116647ec41f6ab5f35de5151f8576/datasets/01f1166558bf19ef8c60a6d0609e4814_school_name"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 14,
+            "width": 5,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "total-students",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "5f8b3ed6",
+                  "fields": [
+                    {
+                      "name": "sum(total_students)",
+                      "expression": "SUM(`total_students`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Total Students",
+                "showTitle": true
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(total_students)"
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 0,
+            "width": 3,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "average-score",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "5f8b3ed6",
+                  "fields": [
+                    {
+                      "name": "avg(avg_performance)",
+                      "expression": "AVG(`avg_performance`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Average score",
+                "showTitle": true
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "avg(avg_performance)"
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 0,
+            "width": 4,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "average-dropout-percentage",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "5f8b3ed6",
+                  "fields": [
+                    {
+                      "name": "avg(avg_dropout_pct)",
+                      "expression": "AVG(`avg_dropout_pct`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Average Dropout Percentage",
+                "showTitle": true
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "avg(avg_dropout_pct)"
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 8,
+            "y": 0,
+            "width": 4,
+            "height": 2
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    },
+    {
+      "name": "a465589c",
+      "displayName": "Global Filters",
+      "layout": [
+        {
+          "widget": {
+            "name": "ca680376",
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-single-select",
+              "encodings": {},
+              "frame": {
+                "showTitle": true
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 2
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_GLOBAL_FILTERS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}
