@@ -189,8 +189,6 @@ airflow users create \
 ```bash
 airflow standalone
 ```
-Open: **http://localhost:8080** | Login: `admin` / `admin123`
-
 ---
 
 ## Running the Databricks Notebooks
@@ -247,35 +245,6 @@ pipeline_start
 | `validate` | Runs 6 quality tests on silver data | Pass/Fail log |
 | `analytics` | Computes YoY trend, dropout risk, KPI summary | `data/gold/*.csv` |
 | `pipeline_complete` | Logs final row counts via XCom | — |
-
-### Trigger Manually
-```bash
-# From terminal
-airflow dags trigger education_medallion_pipeline
-
-# Check status
-airflow dags list-runs -d education_medallion_pipeline
-```
-
----
-
-## Databricks SQL Dashboard
-
-**Dashboard Name:** `Education Analytics Platform`
-
-| Widget | Type | Source Table |
-|--------|------|-------------|
-| Total Students Enrolled | Counter | `gold_kpi_summary` |
-| Avg Performance Score | Counter | `gold_kpi_summary` |
-| Overall Dropout % | Counter | `gold_kpi_summary` |
-| High Risk Count | Counter | `gold_kpi_summary` |
-| Enrollment Trend | Line Chart | `gold_yoy_trend` |
-| Gender Distribution | Grouped Bar | `gold_gender_dist` |
-| Dropout Risk | Table + Colour | `gold_dropout_risk` |
-| School vs Region | Bar Chart | `gold_school_comparison` |
-| Grade Funnel | Bar Chart | `gold_grade_funnel` |
-
----
 
 ## Data Quality Tests
 
