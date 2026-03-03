@@ -47,7 +47,11 @@
         "  overall_dropout_pct       AS `Overall Dropout %`,\n",
         "  high_risk_count           AS `High Risk Count`,\n",
         "  avg_budget_usd            AS `Avg Budget Per Student (USD)`\n",
-        "FROM education_db.gold_kpi_summary;\n"
+        "FROM education_db.gold_kpi_summary;\n",
+        "\n",
+        "\n",
+        "SELECT high_risk_count AS `High Risk Schools`\n",
+        "FROM education_db.gold_kpi_summary"
       ]
     }
   ],
@@ -106,7 +110,7 @@
           },
           "position": {
             "x": 7,
-            "y": 8,
+            "y": 9,
             "width": 5,
             "height": 6
           }
@@ -160,9 +164,9 @@
             }
           },
           "position": {
-            "x": 1,
-            "y": 8,
-            "width": 6,
+            "x": 0,
+            "y": 9,
+            "width": 7,
             "height": 6
           }
         },
@@ -212,9 +216,9 @@
             }
           },
           "position": {
-            "x": 1,
-            "y": 2,
-            "width": 11,
+            "x": 0,
+            "y": 3,
+            "width": 12,
             "height": 6
           }
         },
@@ -288,9 +292,9 @@
             }
           },
           "position": {
-            "x": 1,
-            "y": 15,
-            "width": 11,
+            "x": 0,
+            "y": 16,
+            "width": 12,
             "height": 5
           }
         },
@@ -334,9 +338,9 @@
             }
           },
           "position": {
-            "x": 1,
-            "y": 14,
-            "width": 5,
+            "x": 0,
+            "y": 15,
+            "width": 6,
             "height": 1
           }
         },
@@ -373,9 +377,9 @@
             }
           },
           "position": {
-            "x": 1,
-            "y": 0,
-            "width": 3,
+            "x": 0,
+            "y": 1,
+            "width": 4,
             "height": 2
           }
         },
@@ -413,7 +417,7 @@
           },
           "position": {
             "x": 4,
-            "y": 0,
+            "y": 1,
             "width": 4,
             "height": 2
           }
@@ -452,9 +456,156 @@
           },
           "position": {
             "x": 8,
-            "y": 0,
+            "y": 1,
             "width": 4,
             "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "aab23d81",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## <span style=\"text-align:center;display:block\">**School Enrolment & Education Performance Analytics Platform**</span>"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "gender-distribution-by-school",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "e444a463",
+                  "fields": [
+                    {
+                      "name": "school_name",
+                      "expression": "`school_name`"
+                    },
+                    {
+                      "name": "sum(total_male)",
+                      "expression": "SUM(`total_male`)"
+                    },
+                    {
+                      "name": "sum(total_female)",
+                      "expression": "SUM(`total_female`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Gender Distribution",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "school_name",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "y-reversed"
+                    }
+                  }
+                },
+                "y": {
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "fields": [
+                    {
+                      "fieldName": "sum(total_male)"
+                    },
+                    {
+                      "fieldName": "sum(total_female)"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 21,
+            "width": 12,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "school-vs-region",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "e444a463",
+                  "fields": [
+                    {
+                      "name": "region",
+                      "expression": "`region`"
+                    },
+                    {
+                      "name": "school_name",
+                      "expression": "`school_name`"
+                    },
+                    {
+                      "name": "sum(total_students)",
+                      "expression": "SUM(`total_students`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "School vs Region",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "school_name",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "y-reversed"
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(total_students)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "region",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 27,
+            "width": 12,
+            "height": 6
           }
         }
       ],
